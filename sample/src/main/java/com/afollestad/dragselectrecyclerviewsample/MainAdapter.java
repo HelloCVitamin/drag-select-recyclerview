@@ -17,7 +17,7 @@ import com.afollestad.dragselectrecyclerview.DragSelectRecyclerViewAdapter;
 /**
  * @author Aidan Follestad (afollestad)
  */
-public class MainAdapter extends DragSelectRecyclerViewAdapter<MainAdapter.MainViewHolder> {
+public class MainAdapter<VH extends RecyclerView.ViewHolder> extends DragSelectRecyclerViewAdapter<VH> {
 
     private final static String[] ALPHABET = "A B C D E F G H I J K L M N O P Q R S T U V W X Y Z".split(" ");
     private final static int[] COLORS = new int[]{
@@ -62,19 +62,24 @@ public class MainAdapter extends DragSelectRecyclerViewAdapter<MainAdapter.MainV
         mCallback = callback;
     }
 
+    public MainAdapter(Context context, int sectionResourceId, int textResourceId, RecyclerView recyclerView, ClickListener mCallback) {
+        super(context, sectionResourceId, textResourceId, recyclerView);
+        this.mCallback = mCallback;
+    }
+
     public String getItem(int index) {
         return ALPHABET[index];
     }
 
     @Override
-    public MainViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateItemViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.griditem_main, parent, false);
         return new MainViewHolder(v, mCallback);
     }
 
     @Override
-    public void onBindViewHolder(MainViewHolder holder, int position) {
-        super.onBindViewHolder(holder, position);
+    public void onBindItemViewHolder(VH itemHolder, int position) {
+        MainViewHolder holder = (MainViewHolder) itemHolder;
 
         holder.label.setText(getItem(position));
 
@@ -96,7 +101,7 @@ public class MainAdapter extends DragSelectRecyclerViewAdapter<MainAdapter.MainV
 
     @Override
     public int getItemCount() {
-        return ALPHABET.length;
+        return ALPHABET.length + getSectionsSize();
     }
 
     public static class MainViewHolder extends RecyclerView.ViewHolder

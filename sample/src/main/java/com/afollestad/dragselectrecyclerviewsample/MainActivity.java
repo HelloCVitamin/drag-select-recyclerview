@@ -13,6 +13,9 @@ import com.afollestad.dragselectrecyclerview.DragSelectRecyclerView;
 import com.afollestad.dragselectrecyclerview.DragSelectRecyclerViewAdapter;
 import com.afollestad.materialcab.MaterialCab;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Aidan Follestad (afollestad)
  */
@@ -29,16 +32,34 @@ public class MainActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_main);
         setSupportActionBar((Toolbar) findViewById(R.id.main_toolbar));
 
+        // Setup the RecyclerView
+        mList = (DragSelectRecyclerView) findViewById(R.id.list);
+        mList.setLayoutManager(new GridLayoutManager(this, getResources().getInteger(R.integer.grid_width)));
+
         // Setup adapter and callbacks
-        mAdapter = new MainAdapter(this);
+        mAdapter = new MainAdapter( this, R.layout.section, R.id.section_text, mList, this );
         // Receives selection updates, recommended to set before restoreInstanceState() so initial reselection is received
         mAdapter.setSelectionListener(this);
         // Restore selected indices after Activity recreation
         mAdapter.restoreInstanceState(savedInstanceState);
 
-        // Setup the RecyclerView
-        mList = (DragSelectRecyclerView) findViewById(R.id.list);
-        mList.setLayoutManager(new GridLayoutManager(this, getResources().getInteger(R.integer.grid_width)));
+        mList.setAdapter(mAdapter);
+
+        //This is the code to provide a sectioned grid
+        List<DragSelectRecyclerViewAdapter.Section> sections =
+                new ArrayList<>();
+
+        //Sections
+        sections.add(new DragSelectRecyclerViewAdapter.Section(0,"Section 1"));
+        sections.add(new DragSelectRecyclerViewAdapter.Section(5,"Section 2"));
+        sections.add(new DragSelectRecyclerViewAdapter.Section(12, "Section 3"));
+        sections.add(new DragSelectRecyclerViewAdapter.Section(14, "Section 4"));
+        sections.add(new DragSelectRecyclerViewAdapter.Section(20, "Section 5"));
+
+        DragSelectRecyclerViewAdapter.Section[] dummy = new DragSelectRecyclerViewAdapter.Section[sections.size()];
+
+        mAdapter.setSections(sections.toArray(dummy));
+
         mList.setAdapter(mAdapter);
 
         mCab = MaterialCab.restoreState(savedInstanceState, this, this);

@@ -127,7 +127,8 @@ public class DragSelectRecyclerView extends RecyclerView {
         mLastDraggedIndex = -1;
         mMinReached = -1;
         mMaxReached = -1;
-        if (!mAdapter.isIndexSelectable(initialSelection)) {
+        if (!mAdapter.isIndexSelectable(initialSelection)
+                || mAdapter.isSectionHeaderPosition(initialSelection)) {
             mDragSelectActive = false;
             mInitialSelection = -1;
             mLastDraggedIndex = -1;
