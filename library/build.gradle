@@ -6,12 +6,11 @@ group='com.afollestad'
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
-
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 23
         versionCode 1
-        versionName "0.3.4"
+        versionName '0.3.4.ctodobom.sections'
     }
     lintOptions {
         abortOnError false
@@ -22,6 +21,8 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    productFlavors {
     }
 }
 
